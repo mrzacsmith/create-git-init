@@ -16,3 +16,10 @@ if (files.checkDirectoryExists('.git')) {
   console.log(chalk.red.bold('This is already a Git repo!'))
   process.exit()
 }
+
+const run = async () => {
+  const creds = await inquirer.requestGithubCreds()
+  console.log(creds)
+}
+
+run()
