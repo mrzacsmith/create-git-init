@@ -3,6 +3,7 @@ const chalk = require('chalk')
 const clear = require('clear')
 const files = require('./lib/files.js')
 const inquirer = require('./lib/inquirer.js')
+const github = require('./lib/github.js')
 
 clear()
 
@@ -20,6 +21,19 @@ if (files.checkDirectoryExists('.git')) {
 const run = async () => {
   const creds = await inquirer.requestGithubCreds()
   console.log(creds)
+  // let token = github.getStoredGithubToken()
+  // if (!token) {
+  //   token = await github.getLoginAccessToken()
+  // }
+  // console.log(token)
 }
 
 run()
+
+// const run = async () => {
+//   let token = github.getStoredGithubToken()
+//   if (!token) {
+//     token = await github.getLoginAccessToken()
+//   }
+//   console.log(token)
+// }
