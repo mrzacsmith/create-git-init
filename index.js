@@ -29,6 +29,17 @@ const run = async () => {
   console.log(token)
 }
 
+const getGithubToken = async () => {
+  let token = github.getStoredGithubToken()
+  if (token) {
+    return token
+  }
+
+  token = await github.getLoginAccessToken()
+
+  return token
+}
+
 run()
 
 // const run = async () => {
