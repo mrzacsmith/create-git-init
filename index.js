@@ -4,6 +4,7 @@ const clear = require('clear')
 const files = require('./lib/files.js')
 const inquirer = require('./lib/inquirer.js')
 const github = require('./lib/github.js')
+const repo = require('./lib/repo.js')
 
 clear()
 
@@ -40,12 +41,34 @@ const getGithubToken = async () => {
   return token
 }
 
-run()
+const run = async () => {
+  try {
+    const token = await getGithubToken()
+    github.githubAuth(token)
 
-// const run = async () => {
-//   let token = github.getStoredGithubToken()
-//   if (!token) {
-//     token = await github.getLoginAccessToken()
-//   }
-//   console.log(token)
-// }
+    const url = await repo.createRemoteRepo()
+
+    await repo.createGitIngore()
+
+    await repo.setupRepo(url)
+  } catch (err) {
+    if (err) {
+      switch (err.status) {
+        case 401:
+          console.log(
+            chalk.red(
+              'Could not log in, please provide correct login credentials.'
+            )
+          )
+          break
+        case 402:
+          console.log(
+            chalk.red('There is already a remote repo with this name.')
+          )
+          break
+        default:
+          console.log(chalk.red(err))
+      }
+    }
+  }
+}
