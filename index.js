@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const figlet = require('figlet')
 const chalk = require('chalk')
 const clear = require('clear')
@@ -19,17 +21,6 @@ if (files.checkDirectoryExists('.git')) {
   process.exit()
 }
 
-const run = async () => {
-  const creds = await inquirer.requestGithubCreds()
-  console.log(creds)
-
-  let token = github.getStoredGithubToken()
-  if (!token) {
-    token = await github.getLoginAccessToken()
-  }
-  console.log(token)
-}
-
 const getGithubToken = async () => {
   let token = github.getStoredGithubToken()
   if (token) {
@@ -42,6 +33,15 @@ const getGithubToken = async () => {
 }
 
 const run = async () => {
+  const creds = await inquirer.requestGithubCreds()
+  console.log(creds)
+
+  let token = github.getStoredGithubToken()
+  if (!token) {
+    token = await github.getLoginAccessToken()
+  }
+  console.log(token)
+
   try {
     const token = await getGithubToken()
     github.githubAuth(token)
